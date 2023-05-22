@@ -1,13 +1,71 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>pom2ter</title>
-</head>
-<body>
-<h1> PATAAAAATE</h1>
-</body>
-</html>
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1> Bonjour {{pseudo | raw }} ! </h1>
+
+        <p> {{ serie.title }} : {{ serie.year }} : {{ serie.acteur }}</p>
+
+
+
+
+
+
+
+{# creation de variable #}
+{% set name = "Irwin" %}
+{# affichage de variable #}
+<h2> Hello World ! je suis {{ name }}</h2>
+{# creation d'un tableau' #}
+
+{% set colors = ['blue','grey','purple','green'] %}
+{% for color in colors %}
+    {% if loop.first %}
+        <p> Premiere itération</p>
+    {% endif %}
+    <div style="background-color:{{ color }} ">{{ color }}</div>
+    <div>Position de lélément {{ loop.index }}/ {{ loop.length }}</div>
+    {% if loop.last %}
+        <p> Premiere itération</p>
+    {% endif %}
+
+{% endfor %}
+
+{# Manipulation d'objet #}
+{%
+ set serie = {
+    titre : "Pokemon",
+    annee_de_sortie : "2000"}
+%}
+
+<h3>Title : {{ serie.titre }} </h3>
+
+{% for key ,  val in serie  %}
+    <p>{{ key }}:{{ val
+        }}</p>
+{% endfor %}
+
+
+<h3> filtres </h3>
+<div> {{ name | upper }} : {{ name | length }}</div>
+
+
+<div> Colors : {{  colors | join ('-') }}</div>
+
+
+
+
+<div> {{ "now"|date('Y-m-d') }}</div>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block title %}
+    {{ parent() }} | POTATO
+{% endblock %}

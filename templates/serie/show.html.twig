@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | show
+{% endblock %}
+
+{% block body %}
+<h2> Detail serie</h2>
+
+<section>
+
+    <a class="link_button" href="{{ path('serie_update',{'id':serie.id}) }}">Update !</a>
+    <div class="serie-details">
+
+    <div>
+        <img src="{{ asset('img/posters/series/'~serie.poster) }}" alt="{{ serie.name }}">
+
+    </div>
+        <div class="serie-details-infos">
+            <div>User ratings : {{ serie.vote }}</div>
+            <div>Categorized in  : {{ serie.genres }}</div>
+            <div>Serie status : {{ serie.status}}</div>
+            <div>Diffusé de : {{ serie.firstAirDate | date('d-m-Y') }} à {{ serie.lastAirDate| date('d-m-Y')}}</div>
+            <div>{{ serie.overview | nl2br}}</div>
+        </div>
+
+    </div>
+</section>
+
+
+
+
+{% block extraStyle %}
+    <style>
+        body{
+            background-image: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.5))  ,url("{{ asset('img/backdrops/'~ serie.backdrop) }}");
+
+        }
+
+    </style>
+
+
+
+
+{% endblock %}
+{% endblock %}
+
