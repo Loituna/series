@@ -101,6 +101,19 @@ class SerieController extends AbstractController
           'serieForm'=> $serieForm->createView()      ]);
 
     }
+    #[Route('/delete/{id}', name: 'delete', requirements: ["id"=>"\d+"])]
+    public function delete(int $id, SerieRepository $serieRepository ){
+        $serie = $serieRepository->find($id);
+        $serieRepository->remove($serie,true) ;
+        $this->addFlash('success', $serie->getName()."has been removed !");
+
+
+        return $this->redirectToRoute('serie_list');
+
+
+
+
+    }
 
 
 

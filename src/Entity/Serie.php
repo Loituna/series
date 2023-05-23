@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SerieRepository::class)]
@@ -14,10 +15,11 @@ class Serie
 {
 
 
-
+    #[Groups("serie_data")]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+
     private ?int $id = null;
 
 
@@ -32,6 +34,7 @@ class Serie
     minMessage: "Minimum {{ limit }} character please !",
     maxMessage: "Maximum 255 characters please !"
     )]
+    #[Groups("serie_data")]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
@@ -46,7 +49,7 @@ class Serie
         minMessage: "Minimum {{ limit }} character please !",
         maxMessage: "Maximum {{ limit }} characters please !"
     )]
-
+    #[Groups("serie_data")]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $overview = null;
 
@@ -99,8 +102,8 @@ class Serie
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateModified = null;
-
-    #[ORM\OneToMany(mappedBy: 'serie', targetEntity: Season::class)]
+    #[Groups("serie_data")]
+    #[ORM\OneToMany(mappedBy: 'serie', targetEntity: Season::class, cascade:['remove'] )]
     private Collection $seasons;
 
     public function __construct()

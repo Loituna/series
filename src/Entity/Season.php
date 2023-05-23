@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Repository\SeasonRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: SeasonRepository::class)]
 class Season
 {
@@ -15,12 +17,14 @@ class Season
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups("serie_data")]
     private ?int $number = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $firstAirDate = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups("serie_data")]
     private ?string $overview = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -138,5 +142,14 @@ class Season
         $this->serie = $serie;
 
         return $this;
+    }
+    #[ORM\PrePersist()]
+    public function setNewSeason(){
+        $this->setDateCreated((new \DateTime()));
+
+    }
+    #[ORM\PreUpdate()]
+    public function updateSeason(){
+        $this->setDateModified(new \DateTime());
     }
 }
