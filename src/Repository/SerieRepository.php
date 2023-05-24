@@ -72,17 +72,18 @@ class SerieRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('s');
         $qb->addOrderBy('s.popularity', ' DESC');
-
-
         $qb->leftJoin('s.seasons','seasons');
+
+
         // ne pas oublié !
         $qb->addSelect('seasons');
 
 
+
+
+
         $query = $qb->getQuery();
         $query->setMaxResults(SerieRepository::MAX_RESULT);
-
-
         $offset = ($page - 1) * SerieRepository::MAX_RESULT;
         $query->setFirstResult($offset);
 

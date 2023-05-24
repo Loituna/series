@@ -18,34 +18,29 @@ class SerieController extends AbstractController
     public function retrieveAll(SerieRepository $serieRepository): Response
     {
         $series=$serieRepository->findAll();
-
-
-
         return $this->json($series,200,[],['groups'=> 'serie_data']);
-
-
 
     }
     #[Route('', name:'add_one',methods: ['POST'] )]
     public function addOne(Request $request, SerializerInterface $serializer): Response
     {
             $json = $request->getContent();
-
-
         $serie=    $serializer->deserialize($json, Serie::class, 'json');
-
        dd($serie);
 
     }
     #[Route('/{id}', name: 'retrieve_one', requirements: ['id'=>'\d+'], methods: ['GET'])]
-    public function retrieveOne(int $id): Response
+    public function retrieveOne(int $id,SerieRepository $serieRepository): Response
     {
-
+        $serie=$serieRepository->findBy($id);
+        return $this->json($serie,200,[],['groups'=> 'serie_data']);
     }
     #[Route('/{id}', name:'delete_one',methods: ['DELETE'] )]
-    public function deleteOne(int $id): Response
+    public function deleteOne(int $id,SerieRepository $serieRepository): Response
     {
-
+        $serie=$serieRepository->findBy($id);
+        $serieRepository->remove($serie,true);
+        return $this->json($serie,200,[],['groups'=> 'serie_data']);
     }
     #[Route('', name:'update_one',methods: ['PUT'] )]
     public function updateOne(): Response
