@@ -1,9 +1,19 @@
 <nav>
     <ul>
-        <li><a href="{{ path('main_home') }}">Home</a></li>
-{#        <li><a href="{{ path('main_pdt') }}">Hello World</a></li>#}
+       {# <li><a href="{{ path('main_home') }}">Home</a></li>#}
+
         <li><a href="{{ path('serie_list') }}">Tv Shows</a></li>
+
+
+
+
+{% if app.user %}
         <li><a href="{{ path('serie_add') }}">New Tv Show</a></li>
-        {# <li><a href="{{ path('serie_show', {'id': 'x'}) }}">Show Show</a></li> Pas encore utilisable#}
+        <li><a href="{{ path('app_logout') }}">Logout ({{ app.user.firstname }})</a></li>
+        {% else %}
+        <li><a href="{{ path('app_register') }}">Register</a></li>
+        <li><a href="{{ path('app_login') }}">Login</a></li>
+        {% endif %}
+
     </ul>
 </nav>

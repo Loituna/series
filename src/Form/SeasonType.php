@@ -8,6 +8,7 @@ use App\Repository\SerieRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,7 +25,9 @@ class SeasonType extends AbstractType
 
             )
             ->add('overview')
-            ->add('poster')
+            ->add('poster', FileType::class,[
+                'mapped' => false
+            ])
             ->add('tmdbId')
             // Permet de dire a symfony qu'il sagit d'une entité et que donc les informations sont en BDD
             ->add('serie',EntityType::class,
