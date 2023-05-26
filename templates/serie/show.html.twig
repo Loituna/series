@@ -24,6 +24,11 @@
             <div>Serie status : {{ serie.status}}</div>
             <div>Diffusé de : {{ serie.firstAirDate | date('d-m-Y') }} à {{ serie.lastAirDate| date('d-m-Y')}}</div>
             <div>{{ serie.overview | nl2br}}</div>
+            <div class="flex_div">
+                <button class="like_button" value="1"> Like</button>
+                <button class="like_button" value="0" > DisLike   </button>
+                <div> <span id="nbLikes"> {{ serie.nbLike }} </span>  likes </div>
+            </div>
         </div>
 
     </div>
@@ -44,7 +49,7 @@
         {% endfor %}
     </section>
 
-
+{% endblock %}
 
 {% block extraStyle %}
     <style>
@@ -52,12 +57,37 @@
             background-image: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.5))  ,url("{{ asset('img/backdrops/'~ serie.backdrop) }}");
 
         }
-
     </style>
 
-
-
-
 {% endblock %}
-{% endblock %}
+
+    {% block extraJs %}
+
+        <script>
+
+        let buttons = Array.from( document.getElementsByClassName('like_button'));
+
+
+        buttons.forEach(function (button){
+
+         button.addEventListener("click",function (){
+            let serie = {{ serie.id }};
+            let value = {'value' : this.value }
+
+             fetch("{{ path('api_serie_update_one',{ 'id' : serie.id }) }}",
+                 {method : 'PUT' , body : JSON.stringify(value) })
+                 // then me permet de lancer une callbback au retour de ma requete
+                 // j'extraie ici le corps de ma requete  , à savoir le json
+                 // meme chose que (function(response){return response.json})
+                 .then(response => response.json())
+                 //le second then recupere le json en parametre afin d'en faire le traitement
+                 .then(data=> document.getElementById('nbLikes').innerText = data.nbLike)
+         })
+
+        })
+
+        </script>
+    {% endblock %}
+
+
 

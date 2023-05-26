@@ -44,7 +44,7 @@ class SerieController extends AbstractController
         ]);}
     }
 
-    #[Route('detail/{id}', name: 'show', requirements: ["id"=>"\d+"])]
+    #[Route('/detail/{id}', name: 'show', requirements: ["id"=>"\d+"])]
     public function show(int $id,SerieRepository $serieRepository): Response
     {
        $serie=$serieRepository->find($id);
@@ -97,6 +97,11 @@ class SerieController extends AbstractController
       $serie = $serieRepository->find($id);
       $serieForm = $this->createForm(SerieType::class,$serie);
 
+
+        if(!$serie){
+            // permet de lancer une erreur 404
+            throw $this->createNotFoundException("OOPS , serie not found");
+        }
 
       return $this->render('serie/update.html.twig',[
           'serieForm'=> $serieForm->createView()      ]);

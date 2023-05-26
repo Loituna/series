@@ -6,6 +6,7 @@ use App\Entity\Season;
 use App\Form\SeasonType;
 use App\Repository\SeasonRepository;
 use App\Repository\SerieRepository;
+use App\Tools\Uploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,8 @@ class SeasonController extends AbstractController
         SerieRepository $serieRepository,
         int $id,
         SeasonRepository $seasonRepository,
-        Request $request): Response
+        Request $request,
+        Uploader $uploader): Response
 
     {
         $serie=$serieRepository->find($id);
@@ -37,19 +39,15 @@ class SeasonController extends AbstractController
             $file = $seasonForm->get('poster')->getData();
 
             if($file){
-                $newFileName = $season->getSerie()->getName().
-                    "-".$season->getNumber()."-".uniqid().".".
-                    $file->guessExtension();
-                $file->move('img/posters/seasons',$newFileName);
-                $season->setPoster($newFileName);
 
+                $newFileName= $uploader->saveFile($file,$season->getSerie()->getName().'-'.$season->getNumber(),$this->getParameter('upload_season_poster'));
+
+                $season->setPoster($newFileName);
             }
 
             $seasonRepository->save($season,true);
             $this->addFlash('succes',"Season added on ".$season->getSerie()->getName()."!");
-            return $this->render('serie/show.html.twig', ['id' =>$season->getSerie()->getId()
-
-            ]);
+            return $this->redirectToRoute('serie_show', ['id' => $season->getSerie()->getId() ]);
 
         }
 

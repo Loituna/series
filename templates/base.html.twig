@@ -42,8 +42,7 @@
     {% endfor %}
 
 
-    <main>{% block body %}
-            <p> test</p>{% endblock %}</main>
+    <main>{% block body %}<p> test</p>{% endblock %}</main>
 
     <footer>{{ include('menu/nav.html.twig') }}</footer>
 </div>
@@ -52,6 +51,9 @@
 
 {% endblock %}
 
+{% block extraJs %}
+
+{% endblock %}
 
 
 
