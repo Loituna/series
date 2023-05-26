@@ -75,6 +75,8 @@ class MainController extends AbstractController
 //        $serieRepository->save($serie2, true);
 
 
+
+
         return $this->render('main/pdt.html.twig',[
             "pseudo" => $username,
             "serie"=> $serie,]);
